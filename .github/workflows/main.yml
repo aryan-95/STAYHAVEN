@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./frontend   # 👈 fixed
+        working-directory: ./frontend
     steps:
       - name: Code-checkout
         uses: actions/checkout@v5
@@ -19,14 +19,30 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - run: npm ci
       - run: npm run build
-      - run: npm test
 
   testing:
     runs-on: ubuntu-latest
     needs: build
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Code-checkout
         uses: actions/checkout@v5
+
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+
+      - name: Run tests
+        run: npx vitest run
