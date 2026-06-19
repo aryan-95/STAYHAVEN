@@ -1,0 +1,27 @@
+name : Build WF
+on:
+  push:
+    Branches:
+      - main
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+      steps:
+      - name : Code-checkout
+        uses : actions/checkout@v4
+
+      -name : use Node.js
+       uses : action/setup-node@v4
+      - run : rpm ci
+      - run : npm run build
+      - run : npm npm test 
+      
+
+testing:
+  runs-on: ubuntu latest
+  needs : Build
+  steps: 
+    - namee:  Code checkout
+      uses : action/checkout@v4
+      
