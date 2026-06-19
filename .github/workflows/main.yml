@@ -8,12 +8,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client   # 👈 change this to your actual folder name
     steps:
       - name: Code-checkout
         uses: actions/checkout@v5
 
       - name: Use Node.js
         uses: actions/setup-node@v5
+        with:
+          node-version: 20
 
       - run: npm ci
       - run: npm run build
